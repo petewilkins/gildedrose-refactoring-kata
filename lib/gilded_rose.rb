@@ -16,6 +16,9 @@ class GildedRose
       when 'Backstage passes to a TAFKAL80ETC concert'
         item = BackstagePasses.new(item.quality, item.sell_in)
         item.update_quality
+      when 'Conjured'
+        item = Conjured.new(item.quality, item.sell_in)
+        item.update_quality
       else
         item = Normal.new(item.quality, item.sell_in)
         item.update_quality

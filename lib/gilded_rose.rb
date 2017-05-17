@@ -4,50 +4,43 @@ class GildedRose
     @items = items
   end
 
-  def update_quality()
+  def normal_tick(item)
+    item.sell_in -= 1
+    return if item.quality.zero?
+    item.quality -= 1
+    item.quality -= 1 if item.sell_in <= 0
+  end
+
+  def brie_tick(item)
+    item.sell_in -= 1
+    return if item.quality >= 50
+    item.quality += 1
+    item.quality += 1 if item.sell_in <= 0
+  end
+
+  def sulfuras_tick(item)
+  end
+
+  def backstage_tick(item)
+    item.sell_in -= 1
+    return if item.quality >= 50
+    return item.quality = 0 if item.sell_in <= 0
+    item.quality += 1
+    item.quality += 1 if item.sell_in < 10
+    item.quality += 1 if item.sell_in < 5
+  end
+
+  def update_quality
     @items.each do |item|
-      if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert"
-        if item.quality > 0
-          if item.name != "Sulfuras, Hand of Ragnaros"
-            item.quality = item.quality - 1
-          end
-        end
-      else
-        if item.quality < 50
-          item.quality = item.quality + 1
-          if item.name == "Backstage passes to a TAFKAL80ETC concert"
-            if item.sell_in < 11
-              if item.quality < 50
-                item.quality = item.quality + 1
-              end
-            end
-            if item.sell_in < 6
-              if item.quality < 50
-                item.quality = item.quality + 1
-              end
-            end
-          end
-        end
-      end
-      if item.name != "Sulfuras, Hand of Ragnaros"
-        item.sell_in = item.sell_in - 1
-      end
-      if item.sell_in < 0
-        if item.name != "Aged Brie"
-          if item.name != "Backstage passes to a TAFKAL80ETC concert"
-            if item.quality > 0
-              if item.name != "Sulfuras, Hand of Ragnaros"
-                item.quality = item.quality - 1
-              end
-            end
-          else
-            item.quality = item.quality - item.quality
-          end
-        else
-          if item.quality < 50
-            item.quality = item.quality + 1
-          end
-        end
+      case item.name
+      when 'Normal'
+        return normal_tick(item)
+      when 'Aged Brie'
+        return brie_tick(item)
+      when 'Sulfuras, Hand of Ragnaros'
+        return sulfuras_tick(item)
+      when 'Backstage passes to a TAFKAL80ETC concert'
+        return backstage_tick(item)
       end
     end
   end

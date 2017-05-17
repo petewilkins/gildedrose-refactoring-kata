@@ -4,13 +4,17 @@ class GildedRose
   end
 
   def update_quality
-    @items.each do |item|
-      index = @items.index(item)
+    items.each do |item|
+      index = items.index(item)
       item = klass_for(item.name).new(item.quality, item.sell_in)
       item.update_quality
-      @items[index] = item
+      items[index] = item
     end
   end
+
+  private
+
+  attr_reader :items
 
   def klass_for(name)
     case name

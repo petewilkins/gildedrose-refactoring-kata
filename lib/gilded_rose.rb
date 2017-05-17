@@ -1,6 +1,9 @@
 class GildedRose
   def initialize(items)
     @items = items
+  end
+
+  def update_quality
     @items.each do |item|
       index = @items.index(item)
       item = klass_for(item.name).new(item.quality, item.sell_in)
